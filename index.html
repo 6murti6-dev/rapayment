@@ -2372,16 +2372,31 @@ function hideAuthScreen(){
 }
 
 function renderAuthScreen(mode){
-  authMode=mode;
-  const card=$('#authCard');if(!card)return;
-  const tagline=$('#authTagline');
-  if(tagline)tagline.textContent=mode==='register'?'Buat akun untuk bermain online':'Masuk untuk melanjutkan';
-  $$('#authTabs button').forEach(b=>b.classList.toggle('active',b.dataset.authtab===mode));
-  card.innerHTML='';
-  const form=el('div','auth-form');
-  card.appendChild(form);
-  if(mode==='register')renderRegisterForm(form);
-  else renderLoginForm(form);
+  try {
+    authMode=mode;
+    const card=$('#authCard');
+    if(!card) return;
+    const tagline=$('#authTagline');
+    if(tagline) tagline.textContent = mode==='register'
+      ? 'Buat akun untuk bermain online'
+      : 'Masuk untuk melanjutkan';
+    $$('#authTabs button').forEach(b => b.classList.toggle('active', b.dataset.authtab===mode));
+    card.innerHTML='';
+    const form = el('div','auth-form');
+    /* PENTING: appendChild HARUS sebelum renderLoginForm/renderRegisterForm */
+    card.appendChild(form);
+    try {
+      if (mode==='register') renderRegisterForm(form);
+      else renderLoginForm(form);
+    } catch(innerErr) {
+      console.error('[GG:auth-form]', innerErr);
+      form.innerHTML = '<div style="padding:14px;color:#ff5d6c;font-size:13px">' +
+        'Form gagal dimuat: ' + (innerErr && innerErr.message ? innerErr.message : innerErr) +
+        '</div>';
+    }
+  } catch(e) {
+    console.error('[GG:auth-screen]', e);
+  }
 }
 
 function renderLoginForm(container){
@@ -5075,4 +5090,4 @@ boot().catch(e=>{
 });
 </script>
 </body>
-   </html>
+</html>
