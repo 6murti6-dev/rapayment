@@ -4017,34 +4017,17 @@ async function loadLeaderboard(tab){
       }));
       entries=results.filter(Boolean);
     }else{
-      /* Ambil dari 'users' langsung supaya semua pemain terhitung,
-         fallback ke 'leaderboard' kalau users kosong. */
-      const usersSnap=await FB.api.get(FB.api.ref(FB.db,'users'));
-      const uval=usersSnap.val();
-      if(uval&&typeof uval==='object'&&Object.keys(uval).length){
-        entries=Object.keys(uval).map(k=>{
-          const u=uval[k]||{};
-          return{
-            uid:k,
-            username:typeof u.username==='string'?u.username:'Pemain',
-            avatar:typeof u.avatar==='string'?u.avatar:'',
-            stars:Math.max(0,Number(u.stars)||0),
-            rating:Number(u.rating)||1200,
-            games:Number(u.gamesPlayed)||0
-          };
-        });
-      }else{
-        const snap=await FB.api.get(FB.api.ref(FB.db,'leaderboard'));
-        const val=snap.val()||{};
-        entries=Object.keys(val).map(k=>({
-          uid:k,
-          username:typeof val[k].username==='string'?val[k].username:'Pemain',
-          avatar:typeof val[k].avatar==='string'?val[k].avatar:'',
-          stars:Math.max(0,Number(val[k].stars)||0),
-          rating:Number(val[k].rating)||1200,
-          games:Number(val[k].games)||0
-        }));
-      }
+      /* Baca dari node 'leaderboard' — punya izin read publik untuk user login */
+      const snap=await FB.api.get(FB.api.ref(FB.db,'leaderboard'));
+      const val=snap.val()||{};
+      entries=Object.keys(val).map(k=>({
+        uid:k,
+        username:typeof val[k].username==='string'?val[k].username:'Pemain',
+        avatar:typeof val[k].avatar==='string'?val[k].avatar:'',
+        stars:Math.max(0,Number(val[k].stars)||0),
+        rating:Number(val[k].rating)||1200,
+        games:Number(val[k].games)||0
+      }));
     }
     /* Urut: bintang terbanyak dulu, tiebreaker rating, lalu nama */
     entries.sort((a,b)=>{
@@ -4762,37 +4745,18 @@ async function renderHomeLeaderboard(){
     return;
   }
   try{
-    /* Coba users dulu, fallback ke leaderboard */
-    const usersSnap=await FB.api.get(FB.api.ref(FB.db,'users'));
-    const uval=usersSnap.val();
-    let entries=[];
-    if(uval&&typeof uval==='object'&&Object.keys(uval).length){
-      entries=Object.keys(uval).map(k=>{
-        const u=uval[k]||{};
-        return{
-          uid:k,
-          username:typeof u.username==='string'?u.username:'Pemain',
-          avatar:typeof u.avatar==='string'?u.avatar:'',
-          stars:Math.max(0,Number(u.stars)||0),
-          rating:Number(u.rating)||1200
-        };
-      });
-    }else{
-      const snap=await FB.api.get(FB.api.ref(FB.db,'leaderboard'));
-      const val=snap.val()||{};
-      entries=Object.keys(val).map(k=>({
-        uid:k,
-        username:typeof val[k].username==='string'?val[k].username:'Pemain',
-        avatar:typeof val[k].avatar==='string'?val[k].avatar:'',
-        stars:Math.max(0,Number(val[k].stars)||0),
-        rating:Number(val[k].rating)||1200
-      }));
-    }
-    entries.sort((a,b)=>{
+    const snap=await FB.api.get(FB.api.ref(FB.db,'leaderboard'));
+    const val=snap.val()||{};
+    const entries=Object.keys(val).map(k=>({
+      uid:k,
+      username:typeof val[k].username==='string'?val[k].username:'Pemain',
+      avatar:typeof val[k].avatar==='string'?val[k].avatar:'',
+      stars:Math.max(0,Number(val[k].stars)||0),
+      rating:Number(val[k].rating)||1200
+    })).sort((a,b)=>{
       if(b.stars!==a.stars)return b.stars-a.stars;
       return b.rating-a.rating;
-    });
-    entries=entries.slice(0,5);
+    }).slice(0,5);
     if(!entries.length){
       box.innerHTML='<div class="empty">'+icon('trophy','ic-lg')+'<p>Belum ada data peringkat.</p></div>';
       return;
@@ -5129,15 +5093,34 @@ function enterApp(){
   showView('home');
   setupPresence();
   if(FB.ready&&App.user){
+    /* Sinkronkan leaderboard/{uid} agar semua pemain muncul di peringkat */
+    if(App.profile){
+      FB.api.set(FB.api.ref(FB.db,'leaderboard/'+App.user.uid),{
+        username:App.profile.username||'Pemain',
+        avatar:typeof App.profile.avatar==='string'?App.profile.avatar:'',
+        stars:Math.max(0,Number(App.profile.stars)||0),
+        rating:Number(App.profile.rating)||1200,
+        games:Number(App.profile.gamesPlayed)||0
+      }).catch(e=>logErr('lb-sync',e));
+    }
     dbOnValue('users/'+App.user.uid,data=>{
       if(!data)return;
       App.profile=Object.assign(defaultProfile(App.user.uid,data.username),data,{uid:App.user.uid});
       saveProfileCache(App.user.uid,App.profile);
       if(App.view==='home')renderHome();
       if(App.view==='profile')renderProfile();
+      /* Update leaderboard juga saat profil berubah */
+      FB.api.set(FB.api.ref(FB.db,'leaderboard/'+App.user.uid),{
+        username:App.profile.username||'Pemain',
+        avatar:typeof App.profile.avatar==='string'?App.profile.avatar:'',
+        stars:Math.max(0,Number(App.profile.stars)||0),
+        rating:Number(App.profile.rating)||1200,
+        games:Number(App.profile.gamesPlayed)||0
+      }).catch(()=>{});
     },'me:'+App.user.uid);
   }
 }
+
 function buildMainShell(){
   const app=$('#app');
   if(app)app.classList.remove('hidden');
