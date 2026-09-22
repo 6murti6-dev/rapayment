@@ -413,42 +413,297 @@ svg.ic-xl{width:40px;height:40px}
 .pill.success{background:var(--success-soft);color:var(--success);border-color:rgba(16,217,141,.28)}
 .pill.danger{background:var(--danger-soft);color:var(--danger);border-color:rgba(255,93,108,.28)}
 
+/* ============================================================
+   RANK BADGES — Light-Animated (Dark + Light)
+   ============================================================ */
 .rank-badge{
-  display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:10px;
-  font-size:9.5px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;
-  position:relative;overflow:hidden;isolation:isolate;
-  transition:.2s;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  padding:5px 12px;
+  border-radius:11px;
+  font-size:9.5px;
+  font-weight:900;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  line-height:1.4;
+  border:1px solid;
+  will-change:filter;
+  transition:filter .2s ease;
 }
-.rank-badge::after{
-  content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;
-  background:linear-gradient(155deg,rgba(255,255,255,.3),rgba(255,255,255,0) 45%,rgba(255,255,255,.08));
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
-  -webkit-mask-composite:xor;mask-composite:exclude;
+.rank-badge:hover{filter:brightness(1.15)}
+
+/* Lapis 1: kilau statis di atas + denyut cahaya halus */
+.rank-badge::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:linear-gradient(180deg,
+    rgba(255,255,255,.28) 0%,
+    rgba(255,255,255,.05) 40%,
+    transparent 60%);
   pointer-events:none;
+  z-index:1;
+  animation:lightBreathe 3.8s ease-in-out infinite;
 }
-.rank-badge .star-ico{
-  filter:drop-shadow(0 0 4px rgba(255,196,60,.65));
+[data-theme="light"] .rank-badge::before{
+  background:linear-gradient(180deg,
+    rgba(255,255,255,.55) 0%,
+    rgba(255,255,255,.15) 40%,
+    transparent 60%);
 }
+@keyframes lightBreathe{
+  0%,100%{opacity:.85}
+  50%{opacity:1}
+}
+
+/* Lapis 2: sapuan cahaya melintas */
+.rank-badge::after{
+  content:'';
+  position:absolute;
+  top:-100%;
+  left:-100%;
+  width:55%;
+  height:300%;
+  background:linear-gradient(105deg,
+    transparent 0%,
+    rgba(255,255,255,.08) 40%,
+    rgba(255,255,255,.42) 50%,
+    rgba(255,255,255,.08) 60%,
+    transparent 100%);
+  transform:rotate(20deg);
+  pointer-events:none;
+  z-index:2;
+  animation:badgeSweep 6s cubic-bezier(.5,0,.2,1) infinite;
+}
+[data-theme="light"] .rank-badge::after{
+  background:linear-gradient(105deg,
+    transparent 0%,
+    rgba(255,255,255,.25) 40%,
+    rgba(255,255,255,.75) 50%,
+    rgba(255,255,255,.25) 60%,
+    transparent 100%);
+}
+@keyframes badgeSweep{
+  0%,70%{left:-100%}
+  100%{left:200%}
+}
+
+.rank-badge .star-gold{
+  filter:drop-shadow(0 0 2px rgba(255,200,60,.5));
+}
+
+/* ============================================================
+   ELIT — cahaya aqua mengalir
+   ============================================================ */
 .rb-elit{
-  background:linear-gradient(135deg,rgba(94,214,200,.3),rgba(34,150,180,.14));
-  color:#b7f7ec;border:1px solid rgba(94,214,200,.55);
-  box-shadow:0 0 10px rgba(94,214,200,.22),inset 0 1px 0 rgba(255,255,255,.2);
+  color:#cffcf3;
+  background-image:
+    /* Highlight mengalir */
+    linear-gradient(110deg,
+      transparent 0%,
+      rgba(94,214,200,.25) 45%,
+      rgba(94,214,200,.4) 50%,
+      rgba(94,214,200,.25) 55%,
+      transparent 100%),
+    linear-gradient(180deg,#0e4a52,#08333d);
+  background-size:200% 100%,100% 100%;
+  background-position:0% 0,0 0;
+  border-color:rgba(94,214,200,.5);
+  text-shadow:0 1px 1px rgba(0,0,0,.4);
+  box-shadow:
+    0 1px 3px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(94,214,200,.25),
+    inset 0 -3px 8px rgba(0,0,0,.3);
+  animation:elitFlow 7s ease-in-out infinite;
+}
+@keyframes elitFlow{
+  0%,100%{background-position:0% 0,0 0;}
+  50%{background-position:100% 0,0 0;}
+}
+.rb-elit::after{animation-duration:7s}
+
+[data-theme="light"] .rb-elit{
+  color:#064e4a;
+  background-image:
+    linear-gradient(110deg,
+      transparent 0%,
+      rgba(255,255,255,.6) 45%,
+      rgba(255,255,255,.85) 50%,
+      rgba(255,255,255,.6) 55%,
+      transparent 100%),
+    linear-gradient(180deg,#ccfbf1,#99f6e4);
+  background-size:200% 100%,100% 100%;
+  border-color:#14b8a6;
+  text-shadow:0 1px 0 rgba(255,255,255,.6);
+  box-shadow:
+    0 1px 2px rgba(13,148,136,.15),
+    inset 0 1px 0 rgba(255,255,255,.9),
+    inset 0 -2px 4px rgba(13,148,136,.1);
+}
+
+/* ============================================================
+   MASTER — aurora ungu berdenyut + border shimmer
+   ============================================================ */
+.rb-master{
+  color:#eee5ff;
+  background-image:
+    /* Cahaya ungu mengalir */
+    linear-gradient(120deg,
+      rgba(120,80,220,.35) 0%,
+      rgba(160,110,255,.15) 30%,
+      rgba(200,160,255,.5) 50%,
+      rgba(160,110,255,.15) 70%,
+      rgba(120,80,220,.35) 100%),
+    linear-gradient(180deg,#4a2d8f,#2a1552);
+  background-size:300% 100%,100% 100%;
+  background-position:0% 0,0 0;
+  border-color:rgba(185,155,255,.55);
+  text-shadow:0 1px 1px rgba(0,0,0,.4);
+  animation:
+    masterAurora 8s ease-in-out infinite,
+    masterBorder 4s ease-in-out infinite;
+}
+@keyframes masterAurora{
+  0%,100%{background-position:0% 0,0 0;}
+  50%{background-position:100% 0,0 0;}
+}
+@keyframes masterBorder{
+  0%,100%{border-color:rgba(185,155,255,.55)}
+  50%{border-color:rgba(220,200,255,.85)}
 }
 .rb-master{
-  background:linear-gradient(135deg,rgba(167,139,250,.34),rgba(109,123,255,.16));
-  color:#d9c9ff;border:1px solid rgba(167,139,250,.6);
-  box-shadow:0 0 12px rgba(167,139,250,.3),inset 0 1px 0 rgba(255,255,255,.2);
+  box-shadow:
+    0 1px 3px rgba(0,0,0,.35),
+    0 0 0 1px rgba(167,139,250,.12),
+    inset 0 1px 0 rgba(200,170,255,.3),
+    inset 0 -3px 8px rgba(0,0,0,.3);
 }
+.rb-master::after{animation-duration:5.4s}
+
+[data-theme="light"] .rb-master{
+  color:#3b0a6b;
+  background-image:
+    linear-gradient(120deg,
+      rgba(139,92,246,.28) 0%,
+      rgba(167,139,250,.1) 30%,
+      rgba(196,181,253,.75) 50%,
+      rgba(167,139,250,.1) 70%,
+      rgba(139,92,246,.28) 100%),
+    linear-gradient(180deg,#ede0ff,#d8c3ff);
+  background-size:300% 100%,100% 100%;
+  border-color:#8b5cf6;
+  text-shadow:0 1px 0 rgba(255,255,255,.7);
+  box-shadow:
+    0 1px 2px rgba(124,58,237,.15),
+    inset 0 1px 0 rgba(255,255,255,.9),
+    inset 0 -2px 4px rgba(124,58,237,.1);
+  animation:masterAurora 8s ease-in-out infinite;
+}
+
+/* ============================================================
+   GRANDMASTER — gelombang emas + sparkle hanyut + bintang berkelip
+   ============================================================ */
 .rb-grandmaster{
-  background:linear-gradient(135deg,rgba(255,196,60,.42),rgba(255,93,60,.22));
-  color:#ffe08a;border:1px solid rgba(255,196,60,.7);
-  box-shadow:0 0 18px rgba(255,150,60,.45),inset 0 1px 0 rgba(255,255,255,.25);
-  animation:gmShine 2.8s ease-in-out infinite;
+  color:#fff2cf;
+  background-image:
+    /* Sparkle bergerak diagonal */
+    radial-gradient(1.6px 1.6px at center, rgba(255,255,255,.95), transparent 100%),
+    radial-gradient(1.2px 1.2px at center, rgba(255,240,200,.9), transparent 100%),
+    radial-gradient(1.4px 1.4px at center, rgba(255,220,160,.8), transparent 100%),
+    /* Gelombang cahaya emas */
+    linear-gradient(115deg,
+      transparent 0%,
+      rgba(255,220,130,.35) 45%,
+      rgba(255,240,180,.6) 50%,
+      rgba(255,220,130,.35) 55%,
+      transparent 100%),
+    linear-gradient(180deg,#8f5a12,#5a2e05);
+  background-size:
+    24px 24px,
+    32px 32px,
+    40px 40px,
+    250% 100%,
+    100% 100%;
+  background-position:
+    4px 4px,
+    16px 12px,
+    22px 20px,
+    0% 0,
+    0 0;
+  border-color:rgba(255,200,60,.7);
+  text-shadow:0 1px 2px rgba(50,20,0,.6);
+  box-shadow:
+    0 1px 3px rgba(0,0,0,.4),
+    0 0 0 1px rgba(255,200,60,.15),
+    inset 0 1px 0 rgba(255,220,140,.4),
+    inset 0 -3px 8px rgba(0,0,0,.35);
+  animation:
+    gmSparkleDrift 10s linear infinite,
+    gmGoldWave 6s ease-in-out infinite,
+    gmBorderShimmer 3.4s ease-in-out infinite;
 }
-@keyframes gmShine{
-  0%,100%{box-shadow:0 0 16px rgba(255,150,60,.42),inset 0 1px 0 rgba(255,255,255,.22)}
-  50%{box-shadow:0 0 26px rgba(255,180,60,.7),inset 0 1px 0 rgba(255,255,255,.3)}
+@keyframes gmSparkleDrift{
+  0%{background-position:4px 4px,16px 12px,22px 20px,0% 0,0 0;}
+  100%{background-position:28px 28px,48px 44px,62px 60px,0% 0,0 0;}
 }
+@keyframes gmGoldWave{
+  0%,100%{background-position:4px 4px,16px 12px,22px 20px,0% 0,0 0;}
+  50%{background-position:4px 4px,16px 12px,22px 20px,100% 0,0 0;}
+}
+@keyframes gmBorderShimmer{
+  0%,100%{border-color:rgba(255,200,60,.7)}
+  50%{border-color:rgba(255,235,150,1)}
+}
+
+/* Bintang berkelip — hanya opacity, tidak bergerak */
+.rb-grandmaster .star-gold{
+  animation:gmStarBlink 2s ease-in-out infinite;
+}
+@keyframes gmStarBlink{
+  0%,100%{opacity:1}
+  50%{opacity:.7}
+}
+
+.rb-grandmaster::after{animation-duration:4s}
+
+[data-theme="light"] .rb-grandmaster{
+  color:#5a2a00;
+  background-image:
+    radial-gradient(1.6px 1.6px at center, rgba(120,53,15,.75), transparent 100%),
+    radial-gradient(1.2px 1.2px at center, rgba(180,83,9,.6), transparent 100%),
+    radial-gradient(1.4px 1.4px at center, rgba(217,119,6,.5), transparent 100%),
+    linear-gradient(115deg,
+      transparent 0%,
+      rgba(255,255,255,.55) 45%,
+      rgba(255,255,255,.85) 50%,
+      rgba(255,255,255,.55) 55%,
+      transparent 100%),
+    linear-gradient(180deg,#fef3c7,#fde68a);
+  background-size:24px 24px,32px 32px,40px 40px,250% 100%,100% 100%;
+  border-color:#b45309;
+  text-shadow:0 1px 0 rgba(255,255,255,.6);
+  box-shadow:
+    0 1px 2px rgba(180,83,9,.18),
+    inset 0 1px 0 rgba(255,255,255,.9),
+    inset 0 -2px 4px rgba(180,83,9,.12);
+}
+
+/* Hormati preferensi pengguna */
+@media (prefers-reduced-motion:reduce){
+  .rank-badge,
+  .rank-badge::before,
+  .rank-badge::after,
+  .rank-badge .star-gold{
+    animation:none !important;
+  }
+   }
+}
+   
 /* Bintang emas di mana pun */
 .star-gold{display:inline-block;vertical-align:-2px;flex:none}
 
