@@ -413,274 +413,41 @@ svg.ic-xl{width:40px;height:40px}
 .pill.success{background:var(--success-soft);color:var(--success);border-color:rgba(16,217,141,.28)}
 .pill.danger{background:var(--danger-soft);color:var(--danger);border-color:rgba(255,93,108,.28)}
 
-/* ============================================================
-   RANK BADGES — Enhanced (Dark + Light)
-   ============================================================ */
 .rank-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:5px;
-  padding:5px 12px;
-  border-radius:11px;
-  font-size:9.5px;
-  font-weight:900;
-  letter-spacing:.1em;
-  text-transform:uppercase;
-  position:relative;
-  overflow:hidden;
-  isolation:isolate;
-  transition:.28s cubic-bezier(.2,1,.4,1);
-  line-height:1.4;
-  border:1px solid;
-  will-change:transform,box-shadow;
+  display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:10px;
+  font-size:9.5px;font-weight:900;letter-spacing:.09em;text-transform:uppercase;
+  position:relative;overflow:hidden;isolation:isolate;
+  transition:.2s;
 }
-.rank-badge:hover{transform:translateY(-1px) scale(1.04)}
-
-/* Kilau atas */
-.rank-badge::before{
-  content:'';
-  position:absolute;
-  inset:0;
-  border-radius:inherit;
-  background:linear-gradient(180deg,
-    rgba(255,255,255,.42) 0%,
-    rgba(255,255,255,.08) 42%,
-    transparent 65%);
-  pointer-events:none;
-  z-index:1;
-}
-[data-theme="light"] .rank-badge::before{
-  background:linear-gradient(180deg,
-    rgba(255,255,255,.7) 0%,
-    rgba(255,255,255,.25) 42%,
-    transparent 65%);
-}
-
-/* Sapuan cahaya */
 .rank-badge::after{
-  content:'';
-  position:absolute;
-  top:-100%;
-  left:-100%;
-  width:60%;
-  height:300%;
-  background:linear-gradient(105deg,
-    transparent 0%,
-    rgba(255,255,255,.15) 40%,
-    rgba(255,255,255,.7) 50%,
-    rgba(255,255,255,.15) 60%,
-    transparent 100%);
-  transform:rotate(20deg);
+  content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;
+  background:linear-gradient(155deg,rgba(255,255,255,.3),rgba(255,255,255,0) 45%,rgba(255,255,255,.08));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor;mask-composite:exclude;
   pointer-events:none;
-  z-index:2;
-  filter:blur(.4px);
-  animation-name:badgeSweep;
-  animation-duration:4s;
-  animation-timing-function:cubic-bezier(.5,0,.2,1);
-  animation-iteration-count:infinite;
 }
-[data-theme="light"] .rank-badge::after{
-  background:linear-gradient(105deg,
-    transparent 0%,
-    rgba(255,255,255,.35) 40%,
-    rgba(255,255,255,1) 50%,
-    rgba(255,255,255,.35) 60%,
-    transparent 100%);
+.rank-badge .star-ico{
+  filter:drop-shadow(0 0 4px rgba(255,196,60,.65));
 }
-@keyframes badgeSweep{
-  0%,60%{left:-100%}
-  100%{left:200%}
-}
-
-/* Bintang emas glow */
-.rank-badge .star-gold{
-  filter:drop-shadow(0 0 3px rgba(255,200,60,.9))
-         drop-shadow(0 0 6px rgba(255,140,30,.5));
-}
-
-/* ============================================================
-   ELIT — Dark
-   ============================================================ */
 .rb-elit{
-  color:#d4fff8;
-  background:
-    linear-gradient(180deg,rgba(24,100,110,.65),rgba(8,42,52,.9)),
-    linear-gradient(135deg,#2dd4bf,#0e7490);
-  border-color:rgba(94,214,200,.7);
-  text-shadow:0 1px 2px rgba(0,0,0,.5);
-  box-shadow:
-    0 0 0 1px rgba(94,214,200,.2),
-    0 2px 8px rgba(34,211,238,.28),
-    0 0 18px rgba(34,211,238,.22),
-    inset 0 1px 0 rgba(255,255,255,.4),
-    inset 0 -6px 14px rgba(0,0,0,.35);
+  background:linear-gradient(135deg,rgba(94,214,200,.3),rgba(34,150,180,.14));
+  color:#b7f7ec;border:1px solid rgba(94,214,200,.55);
+  box-shadow:0 0 10px rgba(94,214,200,.22),inset 0 1px 0 rgba(255,255,255,.2);
 }
-.rb-elit::after{animation-duration:5s}
-
-/* ELIT — Light */
-[data-theme="light"] .rb-elit{
-  color:#064e4a;
-  background:
-    linear-gradient(180deg,rgba(204,251,241,.95),rgba(153,246,228,.9)),
-    linear-gradient(135deg,#5eead4,#14b8a6);
-  border-color:#0d9488;
-  text-shadow:0 1px 0 rgba(255,255,255,.7);
-  box-shadow:
-    0 1px 3px rgba(13,148,136,.25),
-    0 3px 10px rgba(20,184,166,.22),
-    0 0 0 1px rgba(20,184,166,.15),
-    inset 0 1px 0 rgba(255,255,255,.95),
-    inset 0 -2px 6px rgba(13,148,136,.15);
-}
-
-/* ============================================================
-   MASTER — Dark
-   ============================================================ */
 .rb-master{
-  color:#f4ecff;
-  background:
-    linear-gradient(180deg,rgba(90,55,180,.6),rgba(35,15,80,.9)),
-    linear-gradient(135deg,#a46cff,#6d7bff);
-  border-color:rgba(185,155,255,.75);
-  text-shadow:0 1px 2px rgba(0,0,0,.5);
-  animation:masterPulse 3s ease-in-out infinite;
+  background:linear-gradient(135deg,rgba(167,139,250,.34),rgba(109,123,255,.16));
+  color:#d9c9ff;border:1px solid rgba(167,139,250,.6);
+  box-shadow:0 0 12px rgba(167,139,250,.3),inset 0 1px 0 rgba(255,255,255,.2);
 }
-@keyframes masterPulse{
-  0%,100%{
-    box-shadow:
-      0 0 0 1px rgba(167,139,250,.28),
-      0 2px 10px rgba(164,108,255,.4),
-      0 0 22px rgba(164,108,255,.32),
-      0 0 44px rgba(109,123,255,.18),
-      inset 0 1px 0 rgba(255,255,255,.42),
-      inset 0 -6px 14px rgba(0,0,0,.4);
-  }
-  50%{
-    box-shadow:
-      0 0 0 1px rgba(167,139,250,.5),
-      0 2px 16px rgba(164,108,255,.7),
-      0 0 34px rgba(164,108,255,.55),
-      0 0 68px rgba(109,123,255,.35),
-      inset 0 1px 0 rgba(255,255,255,.55),
-      inset 0 -6px 14px rgba(0,0,0,.4);
-  }
-}
-.rb-master::after{animation-duration:3.6s}
-
-/* MASTER — Light */
-[data-theme="light"] .rb-master{
-  color:#3b0a6b;
-  background:
-    linear-gradient(180deg,rgba(237,224,255,.95),rgba(216,195,255,.9)),
-    linear-gradient(135deg,#c4b5fd,#a78bfa);
-  border-color:#7c3aed;
-  text-shadow:0 1px 0 rgba(255,255,255,.8);
-  animation:masterPulseLight 3s ease-in-out infinite;
-}
-@keyframes masterPulseLight{
-  0%,100%{
-    box-shadow:
-      0 1px 3px rgba(124,58,237,.25),
-      0 3px 12px rgba(139,92,246,.3),
-      0 0 0 1px rgba(139,92,246,.15),
-      inset 0 1px 0 rgba(255,255,255,.95),
-      inset 0 -2px 6px rgba(124,58,237,.15);
-  }
-  50%{
-    box-shadow:
-      0 1px 5px rgba(124,58,237,.4),
-      0 4px 20px rgba(139,92,246,.55),
-      0 0 0 1px rgba(139,92,246,.3),
-      0 0 32px rgba(167,139,250,.35),
-      inset 0 1px 0 rgba(255,255,255,1),
-      inset 0 -2px 6px rgba(124,58,237,.15);
-  }
-}
-
-/* ============================================================
-   GRANDMASTER — Dark
-   ============================================================ */
 .rb-grandmaster{
-  color:#fff6d8;
-  background-image:
-    radial-gradient(2px 2px at center, #ffffff, transparent 100%),
-    radial-gradient(1.5px 1.5px at center, #fff3c4, transparent 100%),
-    radial-gradient(1.8px 1.8px at center, #ffffff, transparent 100%),
-    radial-gradient(1.2px 1.2px at center, #ffe8a0, transparent 100%),
-    linear-gradient(180deg,rgba(190,125,20,.65),rgba(85,40,5,.92)),
-    linear-gradient(135deg,#ffc93c,#ff7a2c);
-  background-size:23px 23px,31px 31px,37px 37px,43px 43px,auto,auto;
-  background-position:0 0,11px 5px,6px 19px,20px 13px,0 0,0 0;
-  border-color:rgba(255,200,60,.95);
-  text-shadow:0 1px 3px rgba(80,30,0,.7);
-  animation:
-    gmPulse 2.4s ease-in-out infinite,
-    gmSparkle 5s linear infinite;
+  background:linear-gradient(135deg,rgba(255,196,60,.42),rgba(255,93,60,.22));
+  color:#ffe08a;border:1px solid rgba(255,196,60,.7);
+  box-shadow:0 0 18px rgba(255,150,60,.45),inset 0 1px 0 rgba(255,255,255,.25);
+  animation:gmShine 2.8s ease-in-out infinite;
 }
-@keyframes gmPulse{
-  0%,100%{
-    box-shadow:
-      0 0 0 1px rgba(255,200,60,.45),
-      0 2px 12px rgba(255,180,60,.65),
-      0 0 26px rgba(255,150,40,.5),
-      0 0 52px rgba(255,120,30,.32),
-      inset 0 1px 0 rgba(255,255,255,.6),
-      inset 0 -6px 16px rgba(60,20,0,.5);
-  }
-  50%{
-    box-shadow:
-      0 0 0 1px rgba(255,220,100,.85),
-      0 2px 20px rgba(255,190,70,1),
-      0 0 44px rgba(255,150,40,.85),
-      0 0 88px rgba(255,120,30,.6),
-      inset 0 1px 0 rgba(255,255,255,.85),
-      inset 0 -6px 16px rgba(60,20,0,.5);
-  }
-}
-@keyframes gmSparkle{
-  0%{background-position:0 0,11px 5px,6px 19px,20px 13px,0 0,0 0;}
-  100%{background-position:23px 23px,42px 36px,43px 56px,63px 56px,0 0,0 0;}
-}
-.rb-grandmaster::after{animation-duration:2.6s}
-
-/* GRANDMASTER — Light */
-[data-theme="light"] .rb-grandmaster{
-  color:#5a2a00;
-  background-image:
-    radial-gradient(2px 2px at center, #ffffff, transparent 100%),
-    radial-gradient(1.5px 1.5px at center, #b45309, transparent 100%),
-    radial-gradient(1.8px 1.8px at center, #ffffff, transparent 100%),
-    radial-gradient(1.2px 1.2px at center, #d97706, transparent 100%),
-    linear-gradient(180deg,rgba(255,237,180,.98),rgba(253,214,130,.95)),
-    linear-gradient(135deg,#fbbf24,#f59e0b);
-  background-size:23px 23px,31px 31px,37px 37px,43px 43px,auto,auto;
-  background-position:0 0,11px 5px,6px 19px,20px 13px,0 0,0 0;
-  border-color:#b45309;
-  text-shadow:0 1px 0 rgba(255,255,255,.85);
-  animation:
-    gmPulseLight 2.4s ease-in-out infinite,
-    gmSparkle 5s linear infinite;
-}
-@keyframes gmPulseLight{
-  0%,100%{
-    box-shadow:
-      0 1px 3px rgba(180,83,9,.25),
-      0 3px 14px rgba(245,158,11,.4),
-      0 0 0 1px rgba(217,119,6,.2),
-      0 0 30px rgba(251,191,36,.3),
-      inset 0 1px 0 rgba(255,255,255,1),
-      inset 0 -2px 8px rgba(180,83,9,.18);
-  }
-  50%{
-    box-shadow:
-      0 1px 6px rgba(180,83,9,.4),
-      0 4px 22px rgba(245,158,11,.65),
-      0 0 0 1px rgba(217,119,6,.4),
-      0 0 52px rgba(251,191,36,.55),
-      inset 0 1px 0 rgba(255,255,255,1),
-      inset 0 -2px 8px rgba(180,83,9,.18);
-  }
-     }
+@keyframes gmShine{
+  0%,100%{box-shadow:0 0 16px rgba(255,150,60,.42),inset 0 1px 0 rgba(255,255,255,.22)}
+  50%{box-shadow:0 0 26px rgba(255,180,60,.7),inset 0 1px 0 rgba(255,255,255,.3)}
 }
 /* Bintang emas di mana pun */
 .star-gold{display:inline-block;vertical-align:-2px;flex:none}
